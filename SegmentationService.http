@@ -1,0 +1,6 @@
+@SegmentationService_HostAddress = http://localhost:5160
+
+GET {{SegmentationService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

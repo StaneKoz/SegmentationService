@@ -16,6 +16,11 @@ namespace SegmentationService.Data
                 .HasMany(u => u.Segments)
                 .WithMany(s => s.Users)
                 .UsingEntity(j => j.ToTable("UserSegments"));
+
+
+            modelBuilder.Entity<Segment>()
+                .HasIndex(s => s.Name)
+                .IsUnique();
         }
     }
 }

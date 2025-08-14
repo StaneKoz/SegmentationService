@@ -87,6 +87,27 @@ namespace SegmentationService.Controllers
 
             return Ok($"Пользователь с ID: {user.Id} добавлен в сегмент: {segment.Name}");
         }
+
+        /// <summary>
+        /// Возвращает всех пользователей
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpGet("")]
+        public async Task<ActionResult<List<FullUserDto>>> GetAll()
+        {
+            var users = await _db.Users.Include(u => u.Segments)
+    .Select(s => new FullUserDto
+    {
+        Id = s.Id,
+        Name = s.Name,
+        Segments = s.Segments.Select(seg => seg.Name).ToList(), 
+    })
+    .ToListAsync();
+
+            return users;
+        }
+
         /// <summary>
         /// Возвращает список сегмента пользователя
         /// </summary>

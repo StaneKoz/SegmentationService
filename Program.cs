@@ -1,4 +1,6 @@
 
+using Hangfire;
+using Hangfire.PostgreSql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using SegmentationService.Data;
@@ -17,7 +19,9 @@ namespace SegmentationService
             options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
 
             builder.Services.AddControllers();
-
+            builder.Services.AddHangfire(config =>
+            config.UsePostgreSqlStorage(builder.Configuration.GetConnectionString("Default")));
+            builder.Services.AddHangfireServer();
             builder.Services.AddSwaggerGen(c =>
             {
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -45,6 +49,8 @@ namespace SegmentationService
 
 
             app.MapControllers();
+
+            app.UseHangfireDashboard();
 
             app.Run();
 

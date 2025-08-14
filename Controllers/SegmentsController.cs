@@ -87,27 +87,6 @@ namespace SegmentationService.Controllers
             return NoContent();
         }
 
-        /// <summary>
-        /// Возвращает сегменты пользователя по его ID
-        /// </summary>
-        [HttpGet("user/{userId}")]
-        public async Task<ActionResult<List<Segment>>> GetSegments(int id)
-        {
-            var user = await _db.Users
-                .Include(u => u.Segments)
-                .FirstOrDefaultAsync(u => u.Id == id);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return user.Segments;
-        }
-
-        /// <summary>
-        /// Получить сегмент по ID (внутренний метод)
-        /// </summary>
         [HttpGet("{id}")]
         [ApiExplorerSettings(IgnoreApi = true)] // Скрыть из Swagger
         public async Task<ActionResult<Segment>> GetSegment(int id)
